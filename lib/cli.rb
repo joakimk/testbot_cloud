@@ -5,11 +5,6 @@ module TestbotCloud
   class Cli < Thor
     include Thor::Actions
    
-    def initialize(custom_opts = {})
-      super
-      @custom_opts = custom_opts
-    end
-
     def self.source_root
       File.dirname(__FILE__)
     end
