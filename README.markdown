@@ -36,3 +36,8 @@ Try it out
     cd ..
     rm -rf demo
 
+Features
+-----
+
+* TestbotCloud is continuously tested for compability with Ruby 1.8.7, 1.9.2, JRuby 1.5.5 and Rubinius 1.1.1.
+
