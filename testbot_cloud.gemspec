@@ -12,8 +12,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{Run your tests in the cloud}
   s.description = %q{A tool for creating testbot clusters in the cloud}
 
-  s.rubyforge_project = "testbot_cloud"
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {spec}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
