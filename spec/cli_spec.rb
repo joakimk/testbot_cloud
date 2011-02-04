@@ -1,5 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '../lib/testbot_cloud.rb'))
-require 'minitest/autorun'
+require File.expand_path(File.join(File.dirname(__FILE__), 'spec_helper.rb'))
 
 describe TestbotCloud::Cli do
 
