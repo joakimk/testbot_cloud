@@ -1,6 +1,3 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '../testbot_cloud.rb'))
-
-
 module TestbotCloud
   module Providers
     class Ec2
