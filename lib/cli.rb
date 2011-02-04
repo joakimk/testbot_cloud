@@ -8,16 +8,17 @@ module TestbotCloud
    
     DEFAULT_PROVIDER = :ec2
 
-    attr_accessor :providers
-    
+    def self.providers=(providers)
+      @@providers = providers
+    end
+
     def self.source_root
       File.dirname(__FILE__) + "/providers/templates"
     end
 
     desc "new PROJECT_NAME", "Generate a testbot cloud project"
     def new(name)
-      puts "Creating project: #{name}"
-      @providers[DEFAULT_PROVIDER].generate_project(name)
+      @@providers[DEFAULT_PROVIDER].new(self).generate_project(name)
     end
   end
 end

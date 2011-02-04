@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/testbot_cloud.rb'))
 
+TestbotCloud::Cli.providers = { :ec2 => TestbotCloud::Providers::Ec2 }
 TestbotCloud::Cli.start
+
