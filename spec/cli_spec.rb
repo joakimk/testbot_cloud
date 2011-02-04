@@ -2,11 +2,15 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'spec_helper.rb'))
 
 describe TestbotCloud::Cli do
 
-  describe "when calling new with a project name" do
+  it "should include Thor::Actions" do
+    TestbotCloud::Cli.must_include Thor::Actions
+  end
 
-    it "should include Thor::Actions" do
-      TestbotCloud::Cli.must_include Thor::Actions
-    end
+  it "should set source_root to lib/providers/templates" do
+    TestbotCloud::Cli.source_root.must_include "lib/providers/templates"
+  end
+
+  describe "when calling new with a project name" do
 
     it "should generate a project using EC2 by default" do
       mock_ec2_klass = MiniTest::Mock.new
@@ -19,10 +23,6 @@ describe TestbotCloud::Cli do
       TestbotCloud::Cli.providers = { :ec2 => mock_ec2_klass }
       cli.new("app_name")
       mock_ec2.verify
-    end
-
-    it "should set source_root to lib/providers/templates" do
-      TestbotCloud::Cli.source_root.must_include "lib/providers/templates"
     end
 
   end
