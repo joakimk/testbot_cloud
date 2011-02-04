@@ -4,7 +4,7 @@ describe TestbotCloud::Providers::Ec2 do
 
   describe "generate_project" do
 
-    it "should use thor to copy config files" do
+    it "should use a generator to copy config files" do
       mock_generator = MiniTest::Mock.new
       mock_generator.expect :copy_file, nil, [ "ec2/config.yml", "demo/config.yml" ]
       mock_generator.expect :copy_file, nil, [ "ec2/ssh_key.pem", "demo/ssh_key.pem" ]
