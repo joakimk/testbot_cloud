@@ -9,5 +9,6 @@ Feature: Project creation
   Scenario: Creating a project
     When I generate a project
     Then there should be a project folder
-    And the project folder should contain config files for EC2
+    And the project folder should be setup for EC2
+    And the project folder should contain bootstrap files
 
