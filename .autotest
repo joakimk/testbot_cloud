@@ -3,7 +3,5 @@ require 'autotest/restart'
 Autotest.add_hook :initialize do |at|
   # Makes change detection much faster (but CPU usage higher)
   at.sleep = 0.2
-
-  at.testlib = 'minitest/spec'
 end
 
