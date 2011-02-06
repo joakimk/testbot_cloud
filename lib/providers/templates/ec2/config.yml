@@ -1,0 +1,27 @@
+# How many instances to run
+runners: 2
+
+# Which testbot server to connect to
+server_host: user@example.com
+
+# EC2 settings
+ec2:
+  key_id: AWS_ACCESS_ID
+  key: AWS_ACCESS_KEY
+  security_group: default
+  type: c1.medium
+
+  ### Ubuntu 10.04 images ###
+
+  # 32 bit, ebs (use with t1.micro)
+  #image_id: ami-480df921
+
+  # 32 bit, instance
+  image_id: ami-480df921
+
+  # 64 bit, instance
+  #image_id: ami-da0cf8b3
+
+  # Has the cheapest instances
+  region: us-east-1
+
