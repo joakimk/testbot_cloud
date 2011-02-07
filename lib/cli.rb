@@ -5,17 +5,14 @@ module TestbotCloud
   class Cli < Thor
     include Thor::Actions
 
-    def self.providers=(providers)
-      @@providers = providers
-    end
-
     def self.source_root
-      File.dirname(__FILE__) + "/providers/templates"
+      File.dirname(__FILE__) + "/templates"
     end
 
     desc "new PROJECT_NAME", "Generate a testbot cloud project"
     def new(name)
-      @@providers[TestbotCloud::DEFAULT_PROVIDER].new(self).generate_project(name)
+      copy_file "config.yml", "#{name}/config.yml"
+      copy_file "runner.sh", "#{name}/bootstrap/runner.sh"
     end
   end
 end

@@ -6,18 +6,16 @@ describe TestbotCloud::Cli do
     TestbotCloud::Cli.included_modules.should include(Thor::Actions)
   end
 
-  it "should set source_root to lib/providers/templates" do
-    TestbotCloud::Cli.source_root.should include("lib/providers/templates")
+  it "should set source_root to lib/templates" do
+    TestbotCloud::Cli.source_root.should include("lib/templates")
   end
 
   describe "when calling new with a project name" do
 
-    it "should generate a project using EC2 by default" do
+    it "should generate a project" do
       cli = TestbotCloud::Cli.new
-
-      TestbotCloud::Providers::Ec2.should_receive(:new).with(cli).and_return(mock_ec2 = mock(Object))
-      mock_ec2.should_receive(:generate_project).with("app_name")
-
+      cli.should_receive(:copy_file).with("config.yml", "app_name/config.yml")
+      cli.should_receive(:copy_file).with("runner.sh", "app_name/bootstrap/runner.sh") 
       cli.new("app_name")
     end
 
