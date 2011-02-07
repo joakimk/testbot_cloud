@@ -5,11 +5,15 @@ runners: 2
 server_host: user@example.com
 
 # EC2 settings
-ec2:
-  key_id: AWS_ACCESS_ID
-  key: AWS_ACCESS_KEY
-  security_group: default
-  type: c1.medium
+provider:
+  provider: AWS
+  aws_access_key_id: AWS_ACCESS_ID
+  aws_secret_access_key: AWS_ACCESS_KEY
+
+runner:
+  key_name: ec2_key
+  groups: default
+  flavor_id: c1.medium
 
   ### Ubuntu 10.04 images ###
 
