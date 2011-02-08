@@ -3,6 +3,7 @@ require 'thor'
 require 'fog'
 require 'yaml'
 require 'active_support/core_ext/hash/keys'
+require File.expand_path(File.join(File.dirname(__FILE__), 'network/factory.rb'))
 
 module TestbotCloud
   class Cli < Thor
@@ -32,23 +33,24 @@ module TestbotCloud
           server.wait_for { ready? }
           puts "#{server.id} up, installing testbot..."
           puts "#{server.id} ready."
-          Network::Factory.create(server).bootstrap!
+          Network::Factory.create(compute, server).bootstrap!
         end
       end
       threads.each { |thread| thread.join }
     end
 
-    desc "stop", "Destroy all servers created with the testbot key"
+    desc "stop", "Shutdown servers"
     def stop
       config = YAML.load_file("config.yml")
       provider = config["provider"].symbolize_keys
       
       compute = Fog::Compute.new(provider)
       compute.servers.each do |server|
-        p server
-        #if server.state == "running" #&& server.key_name == runner[:key_name]
+        if Network::Factory.create(compute, server).running?
           puts "Shutting down #{server.id}..."
-          server.destroy
+          server.destroy 
+        end
+        #if server.state == "running" #&& server.key_name == runner[:key_name]
         #end
       end
     end

@@ -42,7 +42,7 @@ describe TestbotCloud::Cli do
       compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
                       and_return(server = mock(Object, :id => nil, :wait_for => nil))
 
-      TestbotCloud::Network::Factory.should_receive(:create).twice.with(server).
+      TestbotCloud::Network::Factory.should_receive(:create).twice.with(compute, server).
                                      and_return(network = mock(Object))
       network.should_receive(:bootstrap!).twice
 
