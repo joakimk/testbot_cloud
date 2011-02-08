@@ -46,7 +46,7 @@ module TestbotCloud
       
       compute = Fog::Compute.new(provider)
       compute.servers.each do |server|
-        if Server::Factory.create(compute, server).running?
+        if server.ready?
           puts "Shutting down #{server.id}..."
           server.destroy 
         end

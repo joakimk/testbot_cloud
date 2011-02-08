@@ -9,10 +9,6 @@ module TestbotCloud
         map_ip!
       end
 
-      def running?
-        @server.status == "active"
-      end
-
       private
 
       def map_ip!

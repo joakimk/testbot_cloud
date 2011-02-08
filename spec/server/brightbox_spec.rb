@@ -1,17 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../spec_helper.rb'))
 
-describe TestbotCloud::Server::Brightbox, "running?" do
-
-  it "should be true when the server status is active" do
-    TestbotCloud::Server::Brightbox.new(nil, mock(Object, :status => "active")).should be_running
-  end
-
-  it "should be false when the server status is not active" do
-    TestbotCloud::Server::Brightbox.new(nil, mock(Object, :status => "deleted")).should_not be_running
-  end
-
-end
-
 describe TestbotCloud::Server::Brightbox, "bootstrap!" do
 
   it "should find unmapped ips and map to the server" do

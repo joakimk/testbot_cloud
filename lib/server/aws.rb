@@ -7,9 +7,6 @@ module TestbotCloud
 
       def bootstrap!
       end
-
-      def running?
-      end
     end
   end
 end
