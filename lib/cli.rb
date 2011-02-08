@@ -49,15 +49,13 @@ module TestbotCloud
 
       config = YAML.load_file("config.yml")
       provider = config["provider"].symbolize_keys
-      runner = config["runner"].symbolize_keys
-      runner_count = config["runners"]
       
       compute = Fog::Compute.new(provider)
       compute.servers.each do |server|
-        if server.state == "running" && server.key_name == runner[:key_name]
-          puts "Shutting down #{server.dns_name}..."
+        #if server.state == "running" #&& server.key_name == runner[:key_name]
+          puts "Shutting down #{server.id}..."
           server.destroy
-        end
+        #end
       end
     end
   end
