@@ -1,5 +1,5 @@
 module TestbotCloud
-  module Network
+  module Server
     class AWS
       def initialize(compute, server)
         @compute, @server = compute, server

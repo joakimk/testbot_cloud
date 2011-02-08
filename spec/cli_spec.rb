@@ -40,11 +40,11 @@ describe TestbotCloud::Cli do
                                         and_return(compute = mock(Object))
       compute.stub!(:servers).and_return(servers = mock(Object))
       compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
-                      and_return(server = mock(Object, :id => nil, :wait_for => nil))
+                      and_return(fog_server = mock(Object, :id => nil, :wait_for => nil))
 
-      TestbotCloud::Network::Factory.should_receive(:create).twice.with(compute, server).
-                                     and_return(network = mock(Object))
-      network.should_receive(:bootstrap!).twice
+      TestbotCloud::Server::Factory.should_receive(:create).twice.with(compute, fog_server).
+                                     and_return(server = mock(Object))
+      server.should_receive(:bootstrap!).twice
 
       cli = TestbotCloud::Cli.new
       cli.stub!(:puts)

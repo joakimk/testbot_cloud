@@ -3,7 +3,7 @@ require 'thor'
 require 'fog'
 require 'yaml'
 require 'active_support/core_ext/hash/keys'
-require File.expand_path(File.join(File.dirname(__FILE__), 'network/factory.rb'))
+require File.expand_path(File.join(File.dirname(__FILE__), 'server/factory.rb'))
 
 module TestbotCloud
   class Cli < Thor
@@ -33,7 +33,7 @@ module TestbotCloud
           server.wait_for { ready? }
           puts "#{server.id} up, installing testbot..."
           puts "#{server.id} ready."
-          Network::Factory.create(compute, server).bootstrap!
+          Server::Factory.create(compute, server).bootstrap!
         end
       end
       threads.each { |thread| thread.join }
@@ -46,7 +46,7 @@ module TestbotCloud
       
       compute = Fog::Compute.new(provider)
       compute.servers.each do |server|
-        if Network::Factory.create(compute, server).running?
+        if Server::Factory.create(compute, server).running?
           puts "Shutting down #{server.id}..."
           server.destroy 
         end
