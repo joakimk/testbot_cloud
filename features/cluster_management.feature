@@ -9,4 +9,5 @@ Feature: Cluster management
     Then I should see "Starting 2 runners..."
     And I should see " up, installing testbot..."
     And I should see " ready."
+    And I should not see any errors
 

@@ -26,3 +26,10 @@ Then /^I should see "([^"]*)"$/ do |text|
   @results.include?(text) || raise
 end
 
+Then /^I should not see any errors$/ do
+  if @results.include?("testbot_cloud/lib")
+    puts @results
+    raise
+  end
+end
+

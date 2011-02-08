@@ -1,10 +1,13 @@
 # How many instances to run
 runners: 2
 
+# The name of the user provided by the cloud image
+ssh_user: ubuntu
+
 # Which testbot server to connect to
 server_host: user@example.com
 
-# EC2 settings
+# Using EC2
 provider:
   provider: AWS
   aws_access_key_id: AWS_ACCESS_ID
@@ -28,4 +31,14 @@ runner:
 
   # Has the cheapest instances
   region: us-east-1
+
+# Using Brightbox
+#provider:
+#  provider: Brightbox
+#  brightbox_client_id: cli-XXXXX
+#  brightbox_secret: xxx
+# 
+#runner:
+#  # Ubuntu 10.04, 32 bit
+#  image_id: img-hm6oj
 

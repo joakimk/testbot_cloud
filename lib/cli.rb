@@ -32,6 +32,7 @@ module TestbotCloud
           server.wait_for { ready? }
           puts "#{server.id} up, installing testbot..."
           puts "#{server.id} ready."
+          Network::Factory.create(server).bootstrap!
         end
       end
       threads.each { |thread| thread.join }
@@ -39,8 +40,6 @@ module TestbotCloud
 
     desc "stop", "Destroy all servers created with the testbot key"
     def stop
-      #Fog.mock!
-
       config = YAML.load_file("config.yml")
       provider = config["provider"].symbolize_keys
       
