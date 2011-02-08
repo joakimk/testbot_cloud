@@ -18,3 +18,11 @@ Then /^the project folder should contain bootstrap files$/ do
   File.exists?("tmp/cluster/bootstrap/runner.sh") || raise
 end
 
+Given /^I start the testbot cluster$/ do
+  @results = `cd tmp/cluster; INTEGRATION_TEST=true ../../bin/testbot_cloud start 2>&1`
+end
+
+Then /^I should see "([^"]*)"$/ do |text|
+  @results.include?(text) || raise
+end
+

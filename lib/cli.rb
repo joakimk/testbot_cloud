@@ -20,11 +20,12 @@ module TestbotCloud
 
     desc "start", "Start a testbot cluster as configured in config.yml"
     def start
+      Fog.mock! if ENV['INTEGRATION_TEST']
       load_config
 
       compute = Fog::Compute.new(@provider_config)
       threads = []
-      puts "Staring #{@runner_count} runners..."
+      puts "Starting #{@runner_count} runners..."
       @runner_count.times do
         threads << Thread.new do
           server = compute.servers.create(@runner_config) 
@@ -38,13 +39,14 @@ module TestbotCloud
 
     desc "stop", "Destroy all servers created with the testbot key"
     def stop
-      Fog.mock!
+      #Fog.mock!
 
       config = YAML.load_file("config.yml")
       provider = config["provider"].symbolize_keys
       
       compute = Fog::Compute.new(provider)
       compute.servers.each do |server|
+        p server
         #if server.state == "running" #&& server.key_name == runner[:key_name]
           puts "Shutting down #{server.id}..."
           server.destroy
