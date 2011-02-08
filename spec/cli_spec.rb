@@ -21,4 +21,32 @@ describe TestbotCloud::Cli do
 
   end
 
+  describe "when calling start" do
+
+    it "should create servers based on config.yml" do
+      YAML.should_receive(:load_file).with("config.yml").and_return({
+        "runners" => 2,
+        "provider" => {
+          "provider" => "AWS",
+          "aws_access_key_id" => "KEY_ID"
+        },
+        "runner" => {
+          "image_id" => "ami-xxxx"
+        }  
+      });
+
+      Fog::Compute.should_receive(:new).with({ :provider => "AWS",
+                                               :aws_access_key_id => "KEY_ID" }).
+                                        and_return(compute = mock(Object))
+      compute.stub!(:servers).and_return(servers = mock(Object))
+      compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
+                      and_return(mock(Object, :id => nil, :wait_for => nil))
+
+      cli = TestbotCloud::Cli.new
+      cli.stub!(:puts)
+      cli.start
+    end
+
+  end
+
 end

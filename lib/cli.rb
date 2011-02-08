@@ -20,23 +20,16 @@ module TestbotCloud
 
     desc "start", "Start a testbot cluster as configured in config.yml"
     def start
-      config = YAML.load_file("config.yml")
-      provider = config["provider"].symbolize_keys
-      runner = config["runner"].symbolize_keys
-      runner_count = config["runners"]
-     
-      puts "NOTE: Dry run, fake servers:" 
-      Fog.mock!
+      load_config
 
-      compute = Fog::Compute.new(provider)
+      compute = Fog::Compute.new(@provider_config)
       threads = []
-      puts "Staring #{runner_count} runners..."
-      runner_count.times do
+      puts "Staring #{@runner_count} runners..."
+      @runner_count.times do
         threads << Thread.new do
-          server = compute.servers.create(runner) 
+          server = compute.servers.create(@runner_config) 
           server.wait_for { ready? }
           puts "#{server.id} up, installing testbot..."
-          sleep 1
           puts "#{server.id} ready."
         end
       end
@@ -57,6 +50,15 @@ module TestbotCloud
           server.destroy
         #end
       end
+    end
+
+    private
+
+    def load_config
+      config = YAML.load_file("config.yml")
+      @provider_config = config["provider"].symbolize_keys
+      @runner_config = config["runner"].symbolize_keys
+      @runner_count = config["runners"]
     end
   end
 end
