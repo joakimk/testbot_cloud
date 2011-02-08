@@ -53,4 +53,31 @@ describe TestbotCloud::Cli do
 
   end
 
+  describe "when calling stop" do
+
+    it "should stop servers that are ready" do
+       YAML.should_receive(:load_file).with("config.yml").and_return({
+         "provider" => {
+           "provider" => "AWS",
+           "aws_access_key_id" => "KEY_ID"
+         },
+         "runner" => {},
+         "runners" => 0
+       });
+
+      Fog::Compute.should_receive(:new).with({ :provider => "AWS",
+                                                :aws_access_key_id => "KEY_ID" }).
+                                         and_return(compute = mock(Object))
+       
+      compute.stub!(:servers).and_return([ mock(Object, :ready? => false), 
+                                           server = mock(Object, :ready? => true, :id => nil) ])
+      server.should_receive(:destroy)
+      
+      cli = TestbotCloud::Cli.new
+      cli.stub!(:puts)
+      cli.stop
+    end
+
+  end
+
 end
