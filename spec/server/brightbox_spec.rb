@@ -11,7 +11,7 @@ describe TestbotCloud::Server::Brightbox, "bootstrap!" do
     server.stub!(:system).and_return(true)
     server.stub!(:sleep)
 
-    server.bootstrap!
+    server.bootstrap!(Mutex.new)
   end
 
   it "should create a cloud ip and map when none are available" do
@@ -32,7 +32,7 @@ describe TestbotCloud::Server::Brightbox, "bootstrap!" do
 
     server.stub!(:system).and_return(true)
     server.stub!(:sleep)
-    server.bootstrap!
+    server.bootstrap!(Mutex.new)
   end
 
   it "should upload bootstrap files and run them" do
@@ -43,11 +43,11 @@ describe TestbotCloud::Server::Brightbox, "bootstrap!" do
     server = TestbotCloud::Server::Brightbox.new(compute, fog_server)
 
     server.should_receive(:system).and_return(true)
-    server.should_receive(:system).with("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@15.14.13.12:~")
-    server.should_receive(:system).with("ssh -o StrictHostKeyChecking=no ubuntu@15.14.13.12 'cd bootstrap; sudo sh runner.sh'")
+    server.should_receive(:system).with("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@15.14.13.12:~ &> /dev/null").and_return(true)
+    server.should_receive(:system).with("ssh -o StrictHostKeyChecking=no ubuntu@15.14.13.12 'cd bootstrap; sudo sh runner.sh' &> /dev/null").and_return(true)
 
     server.stub!(:sleep)
-    server.bootstrap!
+    server.bootstrap!(Mutex.new)
   end
 
 
@@ -61,12 +61,12 @@ describe TestbotCloud::Server::Brightbox, "bootstrap!" do
     server.should_receive(:system).and_return(false)
     server.should_receive(:system).and_return(false)
     server.should_receive(:system).and_return(true)
-    server.should_receive(:system).with("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@15.14.13.12:~")
-    server.should_receive(:system).with("ssh -o StrictHostKeyChecking=no ubuntu@15.14.13.12 'cd bootstrap; sudo sh runner.sh'")
+    server.should_receive(:system).with("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@15.14.13.12:~ &> /dev/null").and_return(true)
+    server.should_receive(:system).with("ssh -o StrictHostKeyChecking=no ubuntu@15.14.13.12 'cd bootstrap; sudo sh runner.sh' &> /dev/null")
 
-    server.should_receive(:sleep).twice.with(3)
+    server.should_receive(:sleep).any_number_of_times
     server.stub!(:puts)
-    server.bootstrap!
+    server.bootstrap!(Mutex.new)
   end
 
   it "should not try to bootstrap if the connection fails" do
@@ -77,11 +77,11 @@ describe TestbotCloud::Server::Brightbox, "bootstrap!" do
     server = TestbotCloud::Server::Brightbox.new(compute, fog_server)
 
     server.stub!(:system).and_return(false)
-    server.should_not_receive(:system).with("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@15.14.13.12:~")
+    server.should_not_receive(:system).with("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@15.14.13.12:~ &> /dev/null")
 
     server.stub!(:sleep)
     server.stub!(:puts)
-    server.bootstrap!
+    server.bootstrap!(Mutex.new)
   end
 
 end

@@ -27,13 +27,18 @@ module TestbotCloud
       compute = Fog::Compute.new(@provider_config)
       threads = []
       puts "Starting #{@runner_count} runners..."
+      mutex = Mutex.new
       @runner_count.times do
         threads << Thread.new do
           server = compute.servers.create(@runner_config) 
           server.wait_for { ready? }
           puts "#{server.id} up, installing testbot..."
-          Server::Factory.create(compute, server).bootstrap!
-          puts "#{server.id} ready."
+          if Server::Factory.create(compute, server).bootstrap!(mutex)
+            puts "#{server.id} ready."
+          else
+            puts "#{server.id} failed, shutting down."
+            server.destroy
+          end
         end
       end
       threads.each { |thread| thread.join }

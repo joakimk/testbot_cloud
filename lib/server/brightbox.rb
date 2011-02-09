@@ -5,21 +5,30 @@ module TestbotCloud
         @compute, @server = compute, server
       end
 
-      def bootstrap!
-        ip = map_ip!
+      def bootstrap!(mutex)
+        ip = nil
+        mutex.synchronize { ip = map_ip! }
+
         unless ENV['INTEGRATION_TEST']
           if online?(ip)
-            system "scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@#{ip.public_ip}:~"
-            system "ssh -o StrictHostKeyChecking=no ubuntu@#{ip.public_ip} 'cd bootstrap; sudo sh runner.sh'"
+            return system("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@#{ip.public_ip}:~ &> /dev/null") &&
+                   system("ssh -o StrictHostKeyChecking=no ubuntu@#{ip.public_ip} 'cd bootstrap; sudo sh runner.sh' &> /dev/null")
           end
+        else
+          return true
         end
+
+        false
       end
 
       private
 
       def online?(ip)
+        # Wait a while, seems the server gets the ssh key some time after being ready.
+        sleep 5
+
         10.times do
-          if system "ssh -o StrictHostKeyChecking=no ubuntu@#{ip.public_ip} 'true' &> /dev/null"
+          if system("ssh -o StrictHostKeyChecking=no ubuntu@#{ip.public_ip} 'true' &> /dev/null")
             return true
           else
             puts "Connection failed for server #{@server.id} @ #{ip.public_ip}, retrying..."

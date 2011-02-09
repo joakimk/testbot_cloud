@@ -23,7 +23,7 @@ describe TestbotCloud::Cli do
 
   describe "when calling start" do
 
-    it "should create servers based on config.yml" do
+    before do
       YAML.should_receive(:load_file).with("config.yml").and_return({
         "runners" => 2,
         "provider" => {
@@ -37,14 +37,31 @@ describe TestbotCloud::Cli do
 
       Fog::Compute.should_receive(:new).with({ :provider => "AWS",
                                                :aws_access_key_id => "KEY_ID" }).
-                                        and_return(compute = mock(Object))
-      compute.stub!(:servers).and_return(servers = mock(Object))
-      compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
-                      and_return(fog_server = mock(Object, :id => nil, :wait_for => nil))
+                                        and_return(@compute = mock(Object))
+      @compute.stub!(:servers).and_return(mock(Object))
+    end
 
-      TestbotCloud::Server::Factory.should_receive(:create).twice.with(compute, fog_server).
+    it "should create servers based on config.yml" do
+      @compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
+                       and_return(fog_server = mock(Object, :id => nil, :wait_for => nil))
+
+      TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, fog_server).
                                      and_return(server = mock(Object))
-      server.should_receive(:bootstrap!).twice
+      server.should_receive(:bootstrap!).twice.and_return(true)
+
+      cli = TestbotCloud::Cli.new
+      cli.stub!(:puts)
+      cli.start
+    end
+
+    it "should destroy the server if bootstrap fails" do
+      @compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
+                       and_return(fog_server = mock(Object, :id => nil, :wait_for => nil))
+
+      TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, fog_server).
+                                     and_return(server = mock(Object))
+      server.stub!(:bootstrap!).and_return(false)
+      fog_server.should_receive(:destroy).twice
 
       cli = TestbotCloud::Cli.new
       cli.stub!(:puts)

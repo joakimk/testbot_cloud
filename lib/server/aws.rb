@@ -5,7 +5,8 @@ module TestbotCloud
         @compute, @server = compute, server
       end
 
-      def bootstrap!
+      def bootstrap!(mutex)
+        true
       end
     end
   end

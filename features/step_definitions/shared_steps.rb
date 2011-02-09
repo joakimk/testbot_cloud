@@ -23,7 +23,7 @@ Given /^I start the testbot cluster$/ do
 end
 
 Then /^I should see "([^"]*)"$/ do |text|
-  @results.include?(text) || raise
+  @results.include?(text) || raise("Did not see '#{text}' in #{@results}")
 end
 
 Then /^I should not see any errors$/ do
