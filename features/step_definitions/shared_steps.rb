@@ -3,7 +3,7 @@ Given /^there is no project$/ do
 end
 
 When /^I generate a project$/ do
-  system("bin/testbot_cloud new tmp/cluster 1> /dev/null") || raise
+  system("INTEGRATION_TEST=true bin/testbot_cloud new tmp/cluster 1> /dev/null") || raise
 end
 
 Then /^there should be a project folder$/ do
