@@ -32,8 +32,8 @@ module TestbotCloud
           server = compute.servers.create(@runner_config) 
           server.wait_for { ready? }
           puts "#{server.id} up, installing testbot..."
-          puts "#{server.id} ready."
           Server::Factory.create(compute, server).bootstrap!
+          puts "#{server.id} ready."
         end
       end
       threads.each { |thread| thread.join }
