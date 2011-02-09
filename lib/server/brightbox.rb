@@ -6,16 +6,22 @@ module TestbotCloud
       end
 
       def bootstrap!
-        map_ip!
+        ip = map_ip!
+        unless ENV['INTEGRATION_TEST']
+          system "scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@#{ip.public_ip}:~"
+          system "ssh -o StrictHostKeyChecking=no ubuntu@#{ip.public_ip} 'cd bootstrap; sudo sh runner.sh'"
+        end
       end
 
       private
 
       def map_ip!
+        ip = get_ip
         ip.map(@server.interfaces.first["id"])
+        ip
       end
 
-      def ip
+      def get_ip
         if available_ip = find_available_ip 
           available_ip
         else
