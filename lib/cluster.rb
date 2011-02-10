@@ -17,12 +17,12 @@ module TestbotCloud
       puts "Starting #{@runner_count} runners..."
       for_each_runner_in_a_thread do |mutex|
         server = nil
-        with_retries do
+        with_retries("server creation") do
           server = @compute.servers.create(@runner_config) 
         end
         
         puts "#{server.id} is being created..."
-        with_retries do
+        with_retries("#{server.id} ready check") do
           server.wait_for { ready? }          
         end
 
@@ -67,12 +67,12 @@ module TestbotCloud
       @runner_count = config["runners"]
     end
 
-    def with_retries
+    def with_retries(job)
       5.times do
         begin
           yield
         rescue Excon::Errors::SocketError => ex
-          puts "API call failed, retrying..."
+          puts "#{job} failed, retrying..."
           sleep 3
         else
           break
