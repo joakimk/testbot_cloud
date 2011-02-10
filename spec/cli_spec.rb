@@ -68,6 +68,33 @@ describe TestbotCloud::Cli do
       cli.start
     end
 
+    it "should retry wait for ready if it fails with a socket error" do
+      class SocketErrorFogServer
+        attr_reader :id
+
+        def wait_for
+          unless @called_once
+            @called_once = true
+            raise Excon::Errors::SocketError.new(Exception.new)
+          else
+            return true
+          end
+        end
+      end
+
+      @compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
+                       and_return(fog_server = SocketErrorFogServer.new)
+
+      TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, fog_server).
+                                    and_return(server = mock(Object))
+      server.stub!(:bootstrap!).and_return(true)
+
+      cli = TestbotCloud::Cli.new
+      cli.stub!(:puts)
+      cli.stub!(:sleep)
+      cli.start
+    end
+
   end
 
   describe "when calling stop" do

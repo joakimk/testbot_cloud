@@ -31,7 +31,17 @@ module TestbotCloud
       @runner_count.times do
         threads << Thread.new do
           server = compute.servers.create(@runner_config) 
-          server.wait_for { ready? }
+          puts "Wait for ready..."
+          5.times do
+            begin
+              server.wait_for { ready? }
+            rescue Excon::Errors::SocketError => ex
+              puts "#{server.id} status check failed, retrying..."
+              sleep 3
+            else
+              break
+            end
+          end
           puts "#{server.id} up, installing testbot..."
           if Server::Factory.create(compute, server).bootstrap!(mutex)
             puts "#{server.id} ready."

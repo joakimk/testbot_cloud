@@ -31,7 +31,7 @@ module TestbotCloud
           if system("ssh -o StrictHostKeyChecking=no ubuntu@#{ip.public_ip} 'true' &> /dev/null")
             return true
           else
-            puts "Connection failed for server #{@server.id} @ #{ip.public_ip}, retrying..."
+            puts "#{@server.id} ssh connection failed, retrying..."
             sleep 3
           end
         end
