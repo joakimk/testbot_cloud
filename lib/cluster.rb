@@ -16,10 +16,15 @@ module TestbotCloud
     def start
       puts "Starting #{@runner_count} runners..."
       for_each_runner_in_a_thread do |mutex|
-        server = @compute.servers.create(@runner_config) 
+        server = nil
+        with_retries do
+          server = @compute.servers.create(@runner_config) 
+        end
         
         puts "#{server.id} is being created..."
-        wait_for_server_to_be_ready(server)
+        with_retries do
+          server.wait_for { ready? }          
+        end
 
         puts "#{server.id} is up, installing testbot..."
         if Server::Factory.create(@compute, server).bootstrap!(mutex)
@@ -62,12 +67,12 @@ module TestbotCloud
       @runner_count = config["runners"]
     end
 
-    def wait_for_server_to_be_ready(server)
+    def with_retries
       5.times do
         begin
-          server.wait_for { ready? }
+          yield
         rescue Excon::Errors::SocketError => ex
-          puts "#{server.id} status check failed, retrying..."
+          puts "API call failed, retrying..."
           sleep 3
         else
           break

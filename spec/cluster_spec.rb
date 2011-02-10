@@ -49,6 +49,33 @@ describe TestbotCloud::Cluster do
       cluster.start
     end
 
+    it "should retry server create if it fails with a socket error" do
+      class OpenStructWithQuietId < OpenStruct; def id; end; end
+      class SocketErrorFogServerCollection
+        attr_reader :id
+
+        def create(opts)
+          unless @called_once
+            @called_once = true
+            raise Excon::Errors::SocketError.new(Exception.new)
+          else
+            return OpenStructWithQuietId.new
+          end
+        end
+      end
+
+      @compute.stub!(:servers).and_return(SocketErrorFogServerCollection.new)
+        
+      TestbotCloud::Server::Factory.should_receive(:create).twice.
+                                    and_return(server = mock(Object))
+      server.stub!(:bootstrap!).and_return(true)
+
+      cluster = TestbotCloud::Cluster.new
+      cluster.stub!(:puts)
+      cluster.stub!(:sleep)
+      cluster.start
+    end
+
     it "should retry wait for ready if it fails with a socket error" do
       class SocketErrorFogServer
         attr_reader :id
@@ -80,7 +107,7 @@ describe TestbotCloud::Cluster do
 
   describe "when calling stop" do
 
-    it "should stop servers that are ready" do
+    before do
        YAML.should_receive(:load_file).with("config.yml").and_return({
          "provider" => {
            "provider" => "AWS",
@@ -89,19 +116,23 @@ describe TestbotCloud::Cluster do
          "runner" => {},
          "runners" => 0
        });
-
+      
       Fog::Compute.should_receive(:new).with({ :provider => "AWS",
                                                 :aws_access_key_id => "KEY_ID" }).
-                                         and_return(compute = mock(Object))
-       
-      compute.stub!(:servers).and_return([ mock(Object, :ready? => false), 
-                                           server = mock(Object, :ready? => true, :id => nil) ])
+                                         and_return(@compute = mock(Object))
+    end
+
+    it "should stop servers that are ready" do
+      @compute.stub!(:servers).and_return([ mock(Object, :ready? => false), 
+                                            server = mock(Object, :ready? => true, :id => nil) ])
       server.should_receive(:destroy)
       
       cluster = TestbotCloud::Cluster.new
       cluster.stub!(:puts)
       cluster.stop
     end
+
+    it "should retry"
 
   end
 
