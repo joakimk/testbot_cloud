@@ -103,6 +103,28 @@ describe TestbotCloud::Cluster do
       cluster.start
     end
 
+    it "should retry bootstrap if it fails with a socket error" do
+      @compute.servers.stub!(:create).and_return(mock(Object, :id => nil, :wait_for => nil))
+
+      class SocketErrorServer
+        def bootstrap!(mutex) 
+          unless @called_once
+            @called_once = true
+            raise Excon::Errors::SocketError.new(Exception.new)
+          else
+            return true
+          end
+        end
+      end
+
+      TestbotCloud::Server::Factory.stub!(:create).and_return(SocketErrorServer.new)
+
+      cluster = TestbotCloud::Cluster.new
+      cluster.stub!(:puts)
+      cluster.stub!(:sleep)
+      cluster.start
+    end
+
   end
 
   describe "when calling stop" do

@@ -27,11 +27,13 @@ module TestbotCloud
         end
 
         puts "#{server.id} is up, installing testbot..."
-        if Server::Factory.create(@compute, server).bootstrap!(mutex)
-          puts "#{server.id} ready."
-        else
-          puts "#{server.id} failed, shutting down."
-          server.destroy
+        with_retries("testbot installation") do
+          if Server::Factory.create(@compute, server).bootstrap!(mutex)
+            puts "#{server.id} ready."
+          else
+            puts "#{server.id} failed, shutting down."
+            server.destroy
+          end
         end
       end
     end
