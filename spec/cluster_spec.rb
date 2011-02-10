@@ -36,8 +36,7 @@ describe TestbotCloud::Cluster do
     end
 
     it "should destroy the server if bootstrap fails" do
-      @compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
-                       and_return(fog_server = mock(Object, :id => nil, :wait_for => nil))
+      @compute.servers.stub!(:create).and_return(fog_server = mock(Object, :id => nil, :wait_for => nil))
 
       TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, fog_server).
                                      and_return(server = mock(Object))
@@ -90,8 +89,7 @@ describe TestbotCloud::Cluster do
         end
       end
 
-      @compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
-                       and_return(fog_server = SocketErrorFogServer.new)
+      @compute.servers.stub!(:create).and_return(fog_server = SocketErrorFogServer.new)
 
       TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, fog_server).
                                     and_return(server = mock(Object))
