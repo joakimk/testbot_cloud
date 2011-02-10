@@ -21,7 +21,7 @@ module TestbotCloud
         puts "#{server.id} is being created..."
         wait_for_server_to_be_ready(server)
 
-        puts "#{server.id} up, installing testbot..."
+        puts "#{server.id} is up, installing testbot..."
         if Server::Factory.create(@compute, server).bootstrap!(mutex)
           puts "#{server.id} ready."
         else
