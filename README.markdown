@@ -52,6 +52,13 @@ Shutdown
 
     testbot_cloud stop
 
+Gotchas
+-----
+
+* Don't create more than 10-15 or so runners at a time (some cloud providers don't allow more than that many connections at once). This might be fixed by batching the creation process in a later version of TestbotCloud.
+
+* Don't create more than 20 runners in total on EC2 as it has a limit by default. See the [EC2 FAQ](http://aws.amazon.com/ec2/faqs) for more info.
+
 Features
 -----
 
