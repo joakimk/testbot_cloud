@@ -50,6 +50,7 @@ module TestbotCloud
       @compute.servers.each do |server|
         if server.ready?
           puts "Shutting down #{server.id}..."
+          #p server
           server.destroy 
         end
         #if server.state == "running" #&& server.key_name == runner[:key_name]

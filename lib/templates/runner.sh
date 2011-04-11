@@ -21,5 +21,5 @@ chmod 0600 .ssh/id_rsa
 # Haven't gotten auto_update to run using this cloud setup
 # script yet, it updates but does not restart the process. 
 
-su ubuntu -c '"PATH="~/.gem/bin:$PATH" GEM_HOME="$HOME/.gem" testbot --runner --ssh_tunnel --auto_update --connect your_server_host'
+su ubuntu -c 'export PATH="$HOME/.gem/bin:$PATH"; export GEM_HOME="$HOME/.gem"; testbot --runner --ssh_tunnel --auto_update --connect your_server_host'
 
