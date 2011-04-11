@@ -39,6 +39,14 @@ module TestbotCloud
     end
 
     def stop
+      unless ENV['IN_TEST']
+        print "Are you sure? this will DESTROY EVERY SERVER on your account. [YES/n]: "; STDOUT.flush
+        if STDIN.gets.chomp != "YES"
+          puts "OK, not doing anything."
+          return
+        end
+      end
+
       @compute.servers.each do |server|
         if server.ready?
           puts "Shutting down #{server.id}..."

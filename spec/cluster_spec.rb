@@ -128,6 +128,9 @@ describe TestbotCloud::Cluster do
   describe "when calling stop" do
 
     before do
+       # Temp hack until we start keeping track of the servers we create and only destroy those.
+       ENV['IN_TEST'] = 'true'
+
        YAML.should_receive(:load_file).with("config.yml").and_return({
          "provider" => {
            "provider" => "AWS",

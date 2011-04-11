@@ -21,7 +21,7 @@ Getting started
 Using AWS EC2:
 
 * Get a AWS account at [http://aws.amazon.com/](http://aws.amazon.com/).
-* Create a Key Pair that is only used for testbot. It will be used to identify which servers to shutdown when the cluster is stopped.
+* Create a Key Pair.
 * Allow SSH login to a security group. For example: SSH, tcp, 22, 22, 0.0.0.0/0.
 
 Using Brightbox:
