@@ -1,9 +1,7 @@
 Work in progress!
 ----
 
-This is **work in progress and not usable yet**. [Readme Driven Development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html)... 
-
-Until this is done, you can use the [cloud_bot](https://github.com/joakimk/cloud_bot) prototype.
+This is **work in progress and only partly usable yet**. [Readme Driven Development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html)... 
 
 WIP docs below
 ----
@@ -28,6 +26,7 @@ Using Brightbox:
 
 * Get a beta account at [http://beta.brightbox.com/beta](http://beta.brightbox.com/beta).
 * Follow [http://docs.brightbox.com/guides/getting_started](http://docs.brightbox.com/guides/getting_started) to setup a SSH key.
+* Don't spin up more than 1 instance at a time. Seems they might have some issues with concurrent creation requests. Looking into it.
 * Todo...
 
 Creating a cluster
