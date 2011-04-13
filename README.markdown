@@ -44,10 +44,6 @@ Start
 
     testbot_cloud start
 
-Status
-
-    testbot_cloud status
-
 Shutdown
 
     testbot_cloud stop
