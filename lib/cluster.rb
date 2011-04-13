@@ -18,7 +18,10 @@ module TestbotCloud
       for_each_runner_in_a_thread do |mutex|
         server = nil
         with_retries("server creation") do
-          server = @compute.servers.create(@runner_config) 
+          # Brightbox API is a bit unstable when creating multiple servers at the same time
+          mutex.synchronize {
+            server = @compute.servers.create(@runner_config) 
+          }
         end
         
         puts "#{server.id} is being created..."
