@@ -18,9 +18,16 @@ module TestbotCloud
       for_each_runner_in_a_thread do |mutex|
         server = nil
         with_retries("server creation") do
-          # Brightbox API is a bit unstable when creating multiple servers at the same time
           mutex.synchronize {
             server = @compute.servers.create(@runner_config) 
+
+            # Brightbox API is a bit unstable when creating multiple servers at the same time
+            if @provider_config[:provider] == "Brightbox"
+              # < Caius> joakimk2: yeah, there's a race condition with creating two servers within the 
+              #                   same second currently. We're working on a fix. Workaround is to
+              #                   wait a second or two before creating the second.
+              sleep 3
+            end
           }
         end
         
