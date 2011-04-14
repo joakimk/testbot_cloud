@@ -15,6 +15,7 @@ describe TestbotCloud::Cli do
     it "should generate a project" do
       cli = TestbotCloud::Cli.new
       cli.should_receive(:copy_file).with("config.yml", "app_name/config.yml")
+      cli.should_receive(:copy_file).with("gitignore", "app_name/.gitignore")
       cli.should_receive(:copy_file).with("runner.sh", "app_name/bootstrap/runner.sh") 
       cli.new("app_name")
     end

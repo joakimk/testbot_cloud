@@ -13,6 +13,7 @@ module TestbotCloud
     desc "new PROJECT_NAME", "Generate a testbot cloud project"
     def new(name)
       copy_file "config.yml", "#{name}/config.yml"
+      copy_file "gitignore", "#{name}/.gitignore"
       copy_file "runner.sh", "#{name}/bootstrap/runner.sh"
     end
 

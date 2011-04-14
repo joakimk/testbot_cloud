@@ -16,6 +16,7 @@ describe TestbotCloud::Cluster do
         }  
       });
 
+      FileUtils.stub!(:mkdir_p)
       Fog::Compute.should_receive(:new).with({ :provider => "AWS",
                                                :aws_access_key_id => "KEY_ID" }).
                                         and_return(@compute = mock(Object))
@@ -32,6 +33,22 @@ describe TestbotCloud::Cluster do
 
       cluster = TestbotCloud::Cluster.new
       cluster.stub!(:puts)
+      cluster.start
+    end
+
+    it "should log the servers that are created" do
+      @compute.servers.stub!(:create).and_return(mock(Object, :id => "srv-boo", :wait_for => nil),
+                                                 mock(Object, :id => "srv-doo", :wait_for => nil))
+
+      TestbotCloud::Server::Factory.should_receive(:create).twice.and_return(server = mock(Object))
+      server.stub!(:bootstrap!).and_return(true)
+
+      FileUtils.should_receive(:mkdir_p).with(".servers/srv-boo")
+      FileUtils.should_receive(:mkdir_p).with(".servers/srv-doo")
+
+      cluster = TestbotCloud::Cluster.new
+      cluster.stub!(:puts)
+      cluster.stub!(:sleep)
       cluster.start
     end
 
@@ -128,9 +145,6 @@ describe TestbotCloud::Cluster do
   describe "when calling stop" do
 
     before do
-       # Temp hack until we start keeping track of the servers we create and only destroy those.
-       ENV['IN_TEST'] = 'true'
-
        YAML.should_receive(:load_file).with("config.yml").and_return({
          "provider" => {
            "provider" => "AWS",
@@ -145,11 +159,17 @@ describe TestbotCloud::Cluster do
                                          and_return(@compute = mock(Object))
     end
 
-    it "should stop servers that are ready" do
-      @compute.stub!(:servers).and_return([ mock(Object, :ready? => false), 
-                                            server = mock(Object, :ready? => true, :id => nil) ])
+    it "should stop servers that are listed in the log file and ready" do
+      @compute.stub!(:servers).and_return([ mock(Object, :ready? => false, :id => "srv-boo"), 
+                                            server = mock(Object, :ready? => true, :id => "srv-moo"),
+                                            unrelated_server = mock(Object, :ready? => true, :id => "srv-ahh") ])
+
+      File.should_receive(:exists?).with(".servers/srv-boo").and_return(true)
+      File.should_receive(:exists?).with(".servers/srv-moo").and_return(true)
+      File.should_receive(:exists?).with(".servers/srv-ahh").and_return(false)
+      FileUtils.should_receive(:rm_rf).with(".servers/srv-moo")
       server.should_receive(:destroy)
-      
+
       cluster = TestbotCloud::Cluster.new
       cluster.stub!(:puts)
       cluster.stop

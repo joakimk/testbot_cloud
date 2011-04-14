@@ -44,7 +44,7 @@ Start
 
     testbot_cloud start
 
-Shutdown
+Shutdown (will only shutdown the servers created by this tool)
 
     testbot_cloud stop
 

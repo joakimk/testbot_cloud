@@ -2,6 +2,7 @@ require 'fog'
 require 'yaml'
 require 'active_support/core_ext/hash/keys'
 require File.expand_path(File.join(File.dirname(__FILE__), 'server/factory.rb'))
+require File.expand_path(File.join(File.dirname(__FILE__), 'servers.rb'))
 
 module TestbotCloud
   class Cluster
@@ -20,6 +21,7 @@ module TestbotCloud
         with_retries("server creation") do
           mutex.synchronize {
             server = @compute.servers.create(@runner_config) 
+            Servers.log_creation(server)
 
             # Brightbox API is a bit unstable when creating multiple servers at the same time
             if @provider_config[:provider] == "Brightbox"
@@ -49,22 +51,12 @@ module TestbotCloud
     end
 
     def stop
-      unless ENV['IN_TEST'] || ENV['INTEGRATION_TEST']
-        print "Are you sure? this will DESTROY EVERY SERVER on your account. [YES/n]: "; STDOUT.flush
-        if STDIN.gets.chomp != "YES"
-          puts "OK, not doing anything."
-          return
-        end
-      end
-
       @compute.servers.each do |server|
-        if server.ready?
+        if Servers.known?(server) && server.ready?
           puts "Shutting down #{server.id}..."
-          #p server
           server.destroy 
+          Servers.log_destruction(server)
         end
-        #if server.state == "running" #&& server.key_name == runner[:key_name]
-        #end
       end
     end
 
