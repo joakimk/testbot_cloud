@@ -45,6 +45,7 @@ module TestbotCloud
           else
             puts "#{server.id} failed, shutting down."
             server.destroy
+            Servers.log_destruction(server)
           end
         end
       end

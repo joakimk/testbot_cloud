@@ -53,12 +53,17 @@ describe TestbotCloud::Cluster do
     end
 
     it "should destroy the server if bootstrap fails" do
-      @compute.servers.stub!(:create).and_return(fog_server = mock(Object, :id => nil, :wait_for => nil))
+      @compute.servers.stub!(:create).and_return(fog_server0 = mock(Object, :id => "srv-boo", :wait_for => nil),
+                                                 fog_server1 = mock(Object, :id => "srv-moo", :wait_for => nil))
 
-      TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, fog_server).
-                                     and_return(server = mock(Object))
+      TestbotCloud::Server::Factory.should_receive(:create).twice.and_return(server = mock(Object))
       server.stub!(:bootstrap!).and_return(false)
-      fog_server.should_receive(:destroy).twice
+
+      FileUtils.should_receive(:rm_rf).with(".servers/srv-moo")
+      FileUtils.should_receive(:rm_rf).with(".servers/srv-boo")
+
+      fog_server0.should_receive(:destroy)
+      fog_server1.should_receive(:destroy)
 
       cluster = TestbotCloud::Cluster.new
       cluster.stub!(:puts)
