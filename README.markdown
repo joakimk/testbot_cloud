@@ -3,7 +3,7 @@ Work in progress!
 
 This is **work in progress**. [Readme Driven Development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html)... 
 
-It works, but there are a few more things I'd like to fix before it's truly production ready.
+It works and is in active use, but there are a few more things I'd like to fix before it's truly production ready.
 
 WIP docs below
 ----
