@@ -55,7 +55,9 @@ module TestbotCloud
       @compute.servers.each do |server|
         if Servers.known?(server) && server.ready?
           puts "Shutting down #{server.id}..."
-          server.destroy 
+          with_retries("server destruction") do
+            server.destroy
+          end
           Servers.log_destruction(server)
         end
       end

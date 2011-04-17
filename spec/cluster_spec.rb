@@ -180,7 +180,28 @@ describe TestbotCloud::Cluster do
       cluster.stop
     end
 
-    it "should retry"
+    it "should retry destroy if it fails with a socket error" do
+      class SocketErrorServer
+        def id; "srv-moo"; end
+        def ready?; true; end
+
+        def destroy
+          return if @called_once
+          @called_once = true
+          raise Excon::Errors::SocketError.new(Exception.new)
+        end
+      end
+
+      @compute.stub!(:servers).and_return([ server = SocketErrorServer.new ]) 
+                                            
+      File.should_receive(:exists?).with(".servers/srv-moo").and_return(true)
+      FileUtils.should_receive(:rm_rf).with(".servers/srv-moo")
+
+      cluster = TestbotCloud::Cluster.new
+      cluster.stub!(:puts)
+      cluster.stub!(:sleep)
+      cluster.stop
+    end
 
   end
 
