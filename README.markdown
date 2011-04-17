@@ -61,3 +61,15 @@ Features
 * TestbotCloud is continuously tested for compability with Ruby 1.8.7, 1.9.2, JRuby 1.5.5 and Rubinius 1.1.1.
 * TestbotCloud is designed to be as reliable as possible when starting and stopping so that you can schedule it with tools like cron and save money.
 
+How to add support for additional cloud computing providers
+-----
+
+Basics:
+* Look at lib/server/aws.rb and lib/server/brightbox.rb.
+* Write you own and add it to lib/server/factory.rb.
+
+When contributing:
+* Make sure you have the tests running on your machine (should be just "bundle" and "rake")."
+* Write tests.
+* Update this readme.
+
