@@ -68,10 +68,12 @@ Basics:
 
 * Look at lib/server/aws.rb and lib/server/brightbox.rb.
 * Write you own and add it to lib/server/factory.rb.
+* Add fog config suitable for the provider to your config.yml.
 
 When contributing:
 
 * Make sure you have the tests running on your machine (should be just running "bundle" and "rake").
 * Write tests.
+* Add a config example to the template at lib/templates/config.yml.
 * Update this readme.
 
