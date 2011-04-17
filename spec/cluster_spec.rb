@@ -2,9 +2,21 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'spec_helper.rb'))
 
 describe TestbotCloud::Cluster do
 
+  describe "when not in a project" do
+
+    it "should do nothing if there is no config.yml file" do
+      File.should_receive(:exists?).any_number_of_times.with("config.yml").and_return(false)
+      cluster = TestbotCloud::Cluster.new
+      cluster.start
+      cluster.stop
+    end
+
+  end
+
   describe "when calling start" do
 
     before do
+      File.stub!(:exists?).with("config.yml").and_return(true)
       YAML.should_receive(:load_file).with("config.yml").and_return({
         "runners" => 2,
         "provider" => {
@@ -150,14 +162,15 @@ describe TestbotCloud::Cluster do
   describe "when calling stop" do
 
     before do
-       YAML.should_receive(:load_file).with("config.yml").and_return({
+      File.stub!(:exists?).with("config.yml").and_return(true)
+      YAML.should_receive(:load_file).with("config.yml").and_return({
          "provider" => {
            "provider" => "AWS",
            "aws_access_key_id" => "KEY_ID"
          },
          "runner" => {},
          "runners" => 0
-       });
+      });
       
       Fog::Compute.should_receive(:new).with({ :provider => "AWS",
                                                 :aws_access_key_id => "KEY_ID" }).

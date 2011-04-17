@@ -9,12 +9,16 @@ module TestbotCloud
 
     def initialize
       Fog.mock! if ENV['INTEGRATION_TEST']
-      load_config
+      if project?
+        load_config
 
-      @compute = Fog::Compute.new(@provider_config)
+        @compute = Fog::Compute.new(@provider_config)
+      end
     end
 
     def start
+      project? || return
+      
       puts "Starting #{@runner_count} runners..."
       for_each_runner_in_a_thread do |mutex|
         server = nil
@@ -52,6 +56,8 @@ module TestbotCloud
     end
 
     def stop
+      project? || return
+
       @compute.servers.each do |server|
         if Servers.known?(server) && server.ready?
           puts "Shutting down #{server.id}..."
@@ -64,6 +70,10 @@ module TestbotCloud
     end
 
     private
+
+    def project?
+      File.exists?("config.yml")
+    end
 
     def for_each_runner_in_a_thread
       threads = []
