@@ -41,7 +41,7 @@ module TestbotCloud
       end
 
       def ssh_opts
-        "-o StrictHostKeyChecking=no #{@opts[:ssh_opts]} #{@opts[:user]}@#{@host}"
+        [ "-o StrictHostKeyChecking=no", @opts[:ssh_opts], "#{@opts[:user]}@#{@host}" ].compact.join(' ')
       end  
     end
   end
