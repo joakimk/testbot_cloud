@@ -42,5 +42,15 @@ describe TestbotCloud::Cli do
 
   end
 
+  describe "when calling version" do
+
+    it "should print the version" do
+      cli = TestbotCloud::Cli.new
+      cli.should_receive(:puts).with("TestbotCloud #{TestbotCloud::VERSION}")
+      cli.version
+    end
+
+  end
+
 end
 

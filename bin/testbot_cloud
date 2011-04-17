@@ -1,4 +1,10 @@
 #!/usr/bin/env ruby
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/testbot_cloud.rb'))
+
+if ARGV.count == 0
+  puts "TestbotCloud #{TestbotCloud::VERSION}"
+  puts
+end
+
 TestbotCloud::Cli.start
 
