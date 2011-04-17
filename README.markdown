@@ -65,10 +65,12 @@ How to add support for additional cloud computing providers
 -----
 
 Basics:
+
 * Look at lib/server/aws.rb and lib/server/brightbox.rb.
 * Write you own and add it to lib/server/factory.rb.
 
 When contributing:
+
 * Make sure you have the tests running on your machine (should be just "bundle" and "rake")."
 * Write tests.
 * Update this readme.
