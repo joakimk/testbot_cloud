@@ -8,7 +8,9 @@ module TestbotCloud
       end
 
       def bootstrap!(mutex)
+        # We use the AWS adapter in integration tests.
         return true if ENV['INTEGRATION_TEST']
+
         Bootstrap.new(@server.dns_name, @server.id, :ssh_opts => "-i testbot.pem").install
       end
     end
