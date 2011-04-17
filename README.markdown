@@ -32,7 +32,6 @@ Using Brightbox:
 
 * Get a beta account at [http://beta.brightbox.com/beta](http://beta.brightbox.com/beta).
 * Follow [http://docs.brightbox.com/guides/getting_started](http://docs.brightbox.com/guides/getting_started) to setup a SSH key.
-* Todo...
 
 Creating a cluster
 ----
