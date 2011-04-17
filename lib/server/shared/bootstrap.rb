@@ -33,15 +33,16 @@ module TestbotCloud
       end
 
       def upload_bootstrap_files
-        system("scp -r bootstrap #{ssh_opts}:~ &> /dev/null")
+        system("scp #{ssh_opts("-r bootstrap")}:~ &> /dev/null")
       end
 
       def run(command)
         system("ssh #{ssh_opts} '#{command}' &> /dev/null")
       end
 
-      def ssh_opts
-        [ "-o StrictHostKeyChecking=no", @opts[:ssh_opts], "#{@opts[:user]}@#{@host}" ].compact.join(' ')
+      def ssh_opts(custom_opts = nil)
+        [ "-o StrictHostKeyChecking=no", @opts[:ssh_opts],
+           custom_opts, "#{@opts[:user]}@#{@host}" ].compact.join(' ')
       end  
     end
   end
