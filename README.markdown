@@ -42,8 +42,6 @@ Create a project
     # create  demo/.gitignore
     # create  demo/bootstrap/runner.sh
 
-    # Edit config.yml and bootstrap/* files.
-
 Start
 
     cd demo
@@ -54,7 +52,7 @@ Start
     # i-dd2222dd is up, installing testbot...
     # i-dd2222dd ready.
   
-Shutdown (will only shutdown the servers created by this tool)
+Shutdown
 
     testbot_cloud stop
 
