@@ -40,7 +40,6 @@ Creating a cluster
 Create a project
 
     testbot_cloud new demo
-    cd demo
 
     # create  demo/config.yml
     # create  demo/.gitignore
