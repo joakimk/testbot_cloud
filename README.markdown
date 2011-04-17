@@ -8,7 +8,7 @@ It works and is in active use, but there are a few more things I'd like to fix b
 WIP docs below
 ----
 
-A tool for creating [testbot](https://github.com/joakimk/testbot) clusters in the cloud.
+A tool for creating and managing [testbot](https://github.com/joakimk/testbot) clusters in the cloud.
 
 Installing
 ----
