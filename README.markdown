@@ -38,15 +38,27 @@ Create a project
     testbot_cloud new demo
     cd demo
 
+    # create  demo/config.yml
+    # create  demo/.gitignore
+    # create  demo/bootstrap/runner.sh
+
     # Edit config.yml and bootstrap/* files.
 
 Start
 
+    cd demo
     testbot_cloud start
-
+    
+    # Starting 1 runners...
+    # i-dd2222dd is being created...
+    # i-dd2222dd is up, installing testbot...
+    # i-dd2222dd ready.
+  
 Shutdown (will only shutdown the servers created by this tool)
 
     testbot_cloud stop
+
+    # Shutting down i-dd2222dd...
 
 Gotchas
 -----
