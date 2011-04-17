@@ -1,13 +1,3 @@
-Work in progress!
-----
-
-This is **work in progress**. [Readme Driven Development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html)... 
-
-It works and is in active use, but there are a few more things I'd like to fix before releasing the gem.
-
-WIP docs below
-----
-
 A tool for creating and managing [testbot](https://github.com/joakimk/testbot) clusters in the cloud.
 
 TestbotCloud is based around the idea that you have a project folder for each cluster (which you can store in verison control). You then use the "testbot_cloud" command to start and stop the cluster.
