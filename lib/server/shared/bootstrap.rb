@@ -13,14 +13,18 @@ module TestbotCloud
       private
       
       def wait_for_server
-        # Wait a while, seems the server gets the ssh key some time after being ready.
-        sleep 5
-
+        fail_count = 0
         10.times do
           if run('true')
             return true
           else
-            puts "#{@id} ssh connection failed, retrying..."
+            fail_count += 1
+            
+            # Usally fails atleast once, so better to keep it quiet to begin with
+            if fail_count > 2
+              puts "#{@id} ssh connection failed, retrying..."
+            end
+
             sleep 3
           end
         end
