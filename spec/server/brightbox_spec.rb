@@ -11,7 +11,7 @@ describe TestbotCloud::Server::Brightbox, "bootstrap!" do
                    [ mock(Object, :status => "mapped"),
                      available_ip = mock(Object, :status => "unmapped", :public_ip => nil) ])
     fog_server = mock(Object, :interfaces => [ { "id" => "int-xxyyy" } ], :id => nil)
-    server = TestbotCloud::Server::Brightbox.new(compute, fog_server)
+    server = TestbotCloud::Server::Brightbox.new(compute, {}, fog_server)
 
     available_ip.should_receive(:map).with("int-xxyyy")
     server.bootstrap!(Mutex.new)
@@ -31,7 +31,7 @@ describe TestbotCloud::Server::Brightbox, "bootstrap!" do
 
     compute = ComputeWithNoFreeIps.new
     fog_server = mock(Object, :interfaces => [ { "id" => "int-xxyyy" } ], :id => nil)
-    server = TestbotCloud::Server::Brightbox.new(compute, fog_server)
+    server = TestbotCloud::Server::Brightbox.new(compute, {}, fog_server)
 
     server.bootstrap!(Mutex.new)
   end

@@ -1,14 +1,14 @@
 module TestbotCloud
   module Server
     class Brightbox
-      def initialize(compute, server)
-        @compute, @server = compute, server
+      def initialize(compute, opts, server)
+        @compute, @opts, @server = compute, opts, server
       end
 
       def bootstrap!(mutex)
         ip = nil
         mutex.synchronize { ip = map_ip! }
-        Bootstrap.new(ip.public_ip, @server.id).install
+        Bootstrap.new(ip.public_ip, @server.id, @opts).install
       end
 
       private

@@ -1,9 +1,8 @@
 module TestbotCloud
   module Server
     class Bootstrap
-      def initialize(host, id, opts = {})
-        @host, @id = host, id
-        @opts = { :user => "ubuntu" }.merge(opts)
+      def initialize(host, id, opts)
+        @host, @id, @opts = host, id, opts
       end
 
       def install
@@ -42,7 +41,7 @@ module TestbotCloud
 
       def ssh_opts(custom_opts = nil)
         [ "-o StrictHostKeyChecking=no", @opts[:ssh_opts],
-           custom_opts, "#{@opts[:user]}@#{@host}" ].compact.join(' ')
+           custom_opts, "#{@opts[:ssh_user]}@#{@host}" ].compact.join(' ')
       end  
     end
   end

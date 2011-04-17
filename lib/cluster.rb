@@ -44,7 +44,7 @@ module TestbotCloud
 
         puts "#{server.id} is up, installing testbot..."
         with_retries("testbot installation") do
-          if Server::Factory.create(@compute, server).bootstrap!(mutex)
+          if Server::Factory.create(@compute, @opts, server).bootstrap!(mutex)
             puts "#{server.id} ready."
           else
             puts "#{server.id} failed, shutting down."
@@ -91,6 +91,7 @@ module TestbotCloud
       @provider_config = config["provider"].symbolize_keys
       @runner_config = config["runner"].symbolize_keys
       @runner_count = config["runners"]
+      @opts = { :ssh_user => config["ssh_user"] }
     end
 
     def with_retries(job)

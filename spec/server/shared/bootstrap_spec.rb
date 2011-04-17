@@ -3,7 +3,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '../../spec_helper.rb
 describe TestbotCloud::Server::Bootstrap do
 
   it "should be able to upload bootstrap files and run them" do
-    bootstrap = TestbotCloud::Server::Bootstrap.new("15.14.13.12", "srv-foo")
+    bootstrap = TestbotCloud::Server::Bootstrap.new("15.14.13.12", "srv-foo", { :ssh_user => "ubuntu" })
 
     bootstrap.should_receive(:system).and_return(true)
     bootstrap.should_receive(:system).with("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@15.14.13.12:~ &> /dev/null").and_return(true)
@@ -14,7 +14,7 @@ describe TestbotCloud::Server::Bootstrap do
   end
 
   it "should try to get a connection going before running bootstrap" do
-    bootstrap = TestbotCloud::Server::Bootstrap.new("15.14.13.12", "srv-foo")
+    bootstrap = TestbotCloud::Server::Bootstrap.new("15.14.13.12", "srv-foo", { :ssh_user => "ubuntu" })
 
     bootstrap.should_receive(:system).and_return(false)
     bootstrap.should_receive(:system).and_return(false)
@@ -27,7 +27,7 @@ describe TestbotCloud::Server::Bootstrap do
   end
 
   it "should not try to bootstrap if the connection fails" do
-    bootstrap = TestbotCloud::Server::Bootstrap.new("15.14.13.12", "srv-foo")
+    bootstrap = TestbotCloud::Server::Bootstrap.new("15.14.13.12", "srv-foo", { :ssh_user => "ubuntu" })
     bootstrap.stub!(:system).and_return(false)
     bootstrap.should_not_receive(:system).with("scp -o StrictHostKeyChecking=no -r bootstrap ubuntu@15.14.13.12:~ &> /dev/null")
 

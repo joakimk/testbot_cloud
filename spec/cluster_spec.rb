@@ -19,6 +19,7 @@ describe TestbotCloud::Cluster do
       File.stub!(:exists?).with("config.yml").and_return(true)
       YAML.should_receive(:load_file).with("config.yml").and_return({
         "runners" => 2,
+        "ssh_user" => "ubuntu",
         "provider" => {
           "provider" => "AWS",
           "aws_access_key_id" => "KEY_ID"
@@ -39,7 +40,7 @@ describe TestbotCloud::Cluster do
       @compute.servers.should_receive(:create).twice.with(:image_id => "ami-xxxx").
                        and_return(fog_server = mock(Object, :id => nil, :wait_for => nil))
 
-      TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, fog_server).
+      TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, { :ssh_user => 'ubuntu' }, fog_server).
                                      and_return(server = mock(Object))
       server.should_receive(:bootstrap!).twice.and_return(true)
 
@@ -125,7 +126,8 @@ describe TestbotCloud::Cluster do
 
       @compute.servers.stub!(:create).and_return(fog_server = SocketErrorFogServer.new)
 
-      TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute, fog_server).
+      TestbotCloud::Server::Factory.should_receive(:create).twice.with(@compute,
+                                    { :ssh_user => "ubuntu" }, fog_server).
                                     and_return(server = mock(Object))
       server.stub!(:bootstrap!).and_return(true)
 
