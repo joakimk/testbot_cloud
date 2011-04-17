@@ -32,11 +32,22 @@ module TestbotCloud
       end
 
       def upload_bootstrap_files
-        system("scp #{ssh_opts("-r bootstrap")}:~ &> /dev/null")
+        run_with_debug("scp #{ssh_opts("-r bootstrap")}:~ &> /dev/null")
       end
 
       def run(command)
-        system("ssh #{ssh_opts} '#{command}' &> /dev/null")
+        run_with_debug("ssh #{ssh_opts} '#{command}' &> /dev/null")
+      end
+
+      def run_with_debug(cmd)
+        if ENV["DEBUG"]
+          puts "DEBUG - CMD: #{cmd}"
+          return_status = system(cmd.gsub(/&.+/, ''))
+          puts "DEBUG - SUCCESS: #{return_status}"
+          return_status
+        else
+          system(cmd)
+        end
       end
 
       def ssh_opts(custom_opts = nil)

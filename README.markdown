@@ -61,6 +61,11 @@ Shutdown
 
     # Shutting down i-dd2222dd...
 
+Debugging
+----
+
+  * Run "**DEBUG=true** testbot_cloud start" to show all SSH commands and the output.
+
 Gotchas
 -----
 
