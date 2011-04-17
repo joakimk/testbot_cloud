@@ -71,7 +71,7 @@ Basics:
 
 When contributing:
 
-* Make sure you have the tests running on your machine (should be just "bundle" and "rake")."
+* Make sure you have the tests running on your machine (should be just running "bundle" and "rake").
 * Write tests.
 * Update this readme.
 
