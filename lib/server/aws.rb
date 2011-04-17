@@ -6,26 +6,18 @@ module TestbotCloud
       end
 
       def bootstrap!(mutex)
-        unless ENV['INTEGRATION_TEST']
-          if online?(@server.dns_name)
-            return system("scp -o StrictHostKeyChecking=no -i testbot.pem -r bootstrap ubuntu@#{@server.dns_name}:~ &> /dev/null") &&
-                   system("ssh -o StrictHostKeyChecking=no -i testbot.pem ubuntu@#{@server.dns_name} 'cd bootstrap; sudo sh runner.sh' &> /dev/null")
-          end
-        else
-          return true
-        end
-
-        false
+        return true if ENV['INTEGRATION_TEST']
+        wait_for_server && upload_bootstrap_files && run('cd bootstrap; sudo sh runner.sh')
       end
 
       private
 
-      def online?(ip)
+      def wait_for_server
         # Wait a while, seems the server gets the ssh key some time after being ready.
         sleep 5
 
         10.times do
-          if system("ssh -o StrictHostKeyChecking=no -i testbot.pem ubuntu@#{ip} 'true' &> /dev/null")
+          if run('true')
             return true
           else
             puts "#{@server.id} ssh connection failed, retrying..."
@@ -34,7 +26,19 @@ module TestbotCloud
         end
 
         false
-      end      
+      end
+
+      def upload_bootstrap_files
+        system("scp -r bootstrap #{ssh_opts}:~ &> /dev/null")
+      end
+
+      def run(command)
+        system("ssh #{ssh_opts} '#{command}' &> /dev/null")
+      end
+
+      def ssh_opts
+        "-o StrictHostKeyChecking=no -i testbot.pem ubuntu@#{@server.dns_name}"
+      end  
     end
   end
 end
