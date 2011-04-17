@@ -64,7 +64,7 @@ Shutdown
 Debugging
 ----
 
-  * Run **DEBUG=true testbot_cloud start** to show all SSH commands and the output.
+  * Run **DEBUG=true testbot_cloud start** to show all SSH commands and output.
 
 Gotchas
 -----
