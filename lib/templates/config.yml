@@ -37,7 +37,7 @@ runner:
 # 
 #runner:
 #  # Ubuntu 10.04, 32 bit
-#  image_id: img-hm6oj
+#  image_id: img-2ab98
 #  
 #  # 4 cores, 1 GB (256 MB / core)
 #  flavor_id: typ-iqisj
