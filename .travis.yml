@@ -2,5 +2,5 @@ rvm:
   - ree
   - 1.9.2
   - rbx
-  - jruby
+# Travis JRuby is a bit broken atm.  - jruby
 
