@@ -65,7 +65,7 @@ Gotchas
 Features
 -----
 
-* TestbotCloud is continuously tested for compability with Ruby 1.8.7, 1.9.2, JRuby 1.6.2 and Rubinius 1.2.3.
+* TestbotCloud is continuously tested for compability with Ruby 1.8.7, 1.9.2, 1.9.3, JRuby 1.6.2 and Rubinius 1.2.3. I'm also trying out travis-ci at http://travis-ci.org/#!/joakimk/testbot_cloud.
 * TestbotCloud is designed to be as reliable as possible when starting and stopping so that you can schedule it with tools like cron and save money.
 
 How to add support for additional cloud computing providers
