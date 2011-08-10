@@ -1,4 +1,4 @@
-[Build status](https://secure.travis-ci.org/joakimk/testbot_cloud.png)
+![Build status](https://secure.travis-ci.org/joakimk/testbot_cloud.png)
 
 A tool for creating and managing [testbot](https://github.com/joakimk/testbot) clusters in the cloud.
 
