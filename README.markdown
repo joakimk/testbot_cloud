@@ -1,3 +1,5 @@
+[Build status](https://secure.travis-ci.org/joakimk/testbot_cloud.png)
+
 A tool for creating and managing [testbot](https://github.com/joakimk/testbot) clusters in the cloud.
 
 TestbotCloud is based around the idea that you have a project folder for each cluster (which you can store in verison control). You then use the "testbot_cloud" command to start and stop the cluster.
