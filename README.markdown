@@ -85,4 +85,3 @@ When contributing:
 * Write tests.
 * Add a config example to the template at lib/templates/config.yml.
 * Update this readme.
-
