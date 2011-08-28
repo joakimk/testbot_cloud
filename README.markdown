@@ -2,7 +2,7 @@
 
 A tool for creating and managing [testbot](https://github.com/joakimk/testbot) clusters in the cloud.
 
-TestbotCloud is based around the idea that you have a project folder for each cluster (which you can store in verison control). You then use the "testbot_cloud" command to start and stop the cluster.
+TestbotCloud is based around the idea that you have a project folder for each cluster (which you can store in version control). You then use the "testbot_cloud" command to start and stop the cluster.
 
 The motivation behind this tool, besides making distributed testing simpler is to be able to run a cluster only when it's needed (by scheduling it with tools like cron).
 
@@ -67,7 +67,7 @@ Gotchas
 Features
 -----
 
-* TestbotCloud is continuously tested for compability with Ruby 1.8.7, 1.9.2, 1.9.3, JRuby 1.6.2 and Rubinius 1.2.3. I'm also trying out travis-ci at http://travis-ci.org/#!/joakimk/testbot_cloud.
+* TestbotCloud is continuously tested for compatibility with Ruby 1.8.7, 1.9.2, 1.9.3, JRuby 1.6.2 and Rubinius 1.2.3. I'm also trying out travis-ci at http://travis-ci.org/#!/joakimk/testbot_cloud.
 * TestbotCloud is designed to be as reliable as possible when starting and stopping so that you can schedule it with tools like cron and save money.
 
 How to add support for additional cloud computing providers
