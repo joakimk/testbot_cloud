@@ -76,7 +76,7 @@ How to add support for additional cloud computing providers
 Basics:
 
 * Look at lib/server/aws.rb and lib/server/brightbox.rb.
-* Write you own and add it to lib/server/factory.rb.
+* Write your own and add it to lib/server/factory.rb.
 * Add fog config suitable for the provider to your config.yml.
 
 When contributing:
