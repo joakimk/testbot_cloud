@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "thor", ">0.14.5"
-  s.add_dependency "fog", ">0.7.2"
+  s.add_dependency "fog", "=0.7.2"
   s.add_dependency "activesupport", ">3.0.0"
   s.add_dependency "rake"
   s.add_development_dependency "bundler"
