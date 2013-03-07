@@ -2,7 +2,7 @@ begin
   require 'fog/compute/models/brightbox/server'
   require 'fog/compute/models/aws/server'
   require 'fog/compute/models/bluebox/server'
-rescue LoadError
+rescue
   # New style paths in fog master
   require 'fog/brightbox/models/compute/server'
   require 'fog/aws/models/compute/server'
