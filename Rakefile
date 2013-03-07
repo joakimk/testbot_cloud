@@ -5,8 +5,9 @@ require 'rspec/core/rake_task'
 
 Bundler::GemHelper.install_tasks
 
-Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format progress"
+task :features do
+  puts
+  system("cucumber features --format progress") || exit(1)
 end
 
 desc "Run specs"
